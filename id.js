@@ -77,4 +77,4 @@ if (typeof NAMESPACE === 'undefined' || NAMESPACE === null)
     }
 
     NAMESPACE.resource = resource;
-}
+
