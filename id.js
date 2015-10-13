@@ -5,8 +5,11 @@
   hhaW4oKnppcChzWy0yOjotMl0sIHNbOjotMl0pKSk=
 \*======================================================================*/
 
-if (NAMESPACE == null
-        || typeof (NAMESPACE) == 'undefined') {
+
+//We need to check for NAMESPACE objects existence first otherwise this will throw the error, 
+//if the object exits then check for null
+if (typeof (NAMESPACE) == 'undefined'
+        || NAMESPACE == null) {
     NAMESPACE = {};
 
     // Creates an object that allocates a new or references an
@@ -37,16 +40,23 @@ if (NAMESPACE == null
 
         var close = function () {
             delete _all_ids[_id];
-            this._closed = true;
+            //this keyword here will provide context of caller i.e. persona, 
+            //but _closed property is part of parent function, hence removed this keyword for
+            //lexer to lookup the parent scope
+            _closed = true;
         }
 
         persona.close = close;
         
         // Private methods
         function _lookupOrCreateExpensiveResourceById(id) {
-            _expensive_resource = _all_ids[id];
+            //Use var keyword to make a local copy of the variable _expensive_resource otherwise it will corrupt
+            //the parent scope/function's copy of _expensive_resource
+            var _expensive_resource = _all_ids[id];
             
-            if (_expensive_resource == null) {
+            //We need to first check whether the id is a defined object, and then check for null condition
+            //Otherwise it will throw error
+            if (typeof _expensive_resource === 'undefined' &&  _expensive_resource === null) {
                 // Just pretend for the sake of this example
                 _expensive_resource = {
                     value: "I'm a very expensive resource associated with ID " + id
