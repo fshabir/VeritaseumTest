@@ -9,8 +9,12 @@ describe('CreatesExpensiveFunction', function(){
 
         expect(NAMESPACE.resource).to.not.be.undefined;
         expect(NAMESPACE.resource(2).getExpensiveResource().value).to.equal("I'm a very expensive resource associated with ID 2");
+        expect(NAMESPACE.resource(3).getExpensiveResource().value).to.equal("I'm a very expensive resource associated with ID 3");
+        expect(NAMESPACE.resource(4).getExpensiveResource().value).to.equal("I'm a very expensive resource associated with ID 4");
+        NAMESPACE.resource(3).close();
+        expect(NAMESPACE.resource.ids[3]).to.be.undefined;
+        expect(NAMESPACE.resource(4).getId()).to.be.equal(4);
 
     })
-
 
 })

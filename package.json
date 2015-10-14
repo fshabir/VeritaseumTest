@@ -4,7 +4,7 @@
   "description": "Initial test by Veritaseum",
   "main": "id.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha && mocha test --require blanket --reporter html-cov > testcoverage.html"
   },
   "repository": {
     "type": "git",
@@ -17,7 +17,14 @@
   },
   "homepage": "https://github.com/furhanshabir/VeritaseumTest#readme",
   "devDependencies": {
+    "blanket": "^1.1.7",
     "chai": "^3.3.0",
     "mocha": "^2.3.3"
+  },
+  "config": {
+    "blanket": {
+      "pattern":"src",
+      "data-cover-never": "node_modules"
+    }
   }
 }

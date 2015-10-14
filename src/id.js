@@ -16,7 +16,7 @@ exports.addNamespaceResource = function() {
         // existing very expensive resource associated with `id`
         var resource = function (id) {
             // Private data
-            var _all_ids = new Array();
+
             var _closed = false;
             var _id = id;
             var _expensive_resource = null;
@@ -38,7 +38,7 @@ exports.addNamespaceResource = function() {
             persona.getId = getId;
 
             var close = function () {
-                delete _all_ids[_id];
+                delete resource.ids[_id];
                 //this keyword here will provide context of caller i.e. persona,
                 //but _closed property is part of parent function, hence removed this keyword for
                 //lexer to lookup the parent scope
@@ -51,7 +51,7 @@ exports.addNamespaceResource = function() {
             function _lookupOrCreateExpensiveResourceById(id) {
                 //Use var keyword to make a local copy of the variable _expensive_resource otherwise it will corrupt
                 //the parent scope/function's copy of _expensive_resource
-                var _expensive_resource = _all_ids[id];
+                var _expensive_resource = resource.ids[id];
 
                 //We need to first check whether the id is a defined object, and then check for null condition
                 //Otherwise it will throw error
@@ -61,7 +61,8 @@ exports.addNamespaceResource = function() {
                         value: "I'm a very expensive resource associated with ID " + id
                     };
 
-                    _all_ids[id] = _expensive_resource;
+                    resource.ids[id] = _expensive_resource;
+
                 }
 
                 return _expensive_resource;
@@ -71,9 +72,12 @@ exports.addNamespaceResource = function() {
             _expensive_resource = _lookupOrCreateExpensiveResourceById(id);
 
             return persona;
-        }
+        };
 
+        //Introduced the Static Member on Constructor Method for maintaining ids of members
+        resource.ids = new Array();
         NAMESPACE.resource = resource;
+
 
         return NAMESPACE;
     }
